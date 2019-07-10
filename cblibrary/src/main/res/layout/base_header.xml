@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:background="#fff"
+             android:layout_height="64dp">
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="10dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+    <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:maxWidth="250dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_height="48dp"
+            android:gravity="center"
+            tools:text="测试标题"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg"
+            android:layout_gravity="bottom"/>
+</FrameLayout>

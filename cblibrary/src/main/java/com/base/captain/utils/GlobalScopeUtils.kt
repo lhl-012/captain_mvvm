@@ -6,6 +6,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.*
 
+fun LifecycleOwner.delayLife(time: Long = 2000, action: () -> Unit) {
+    val deferred = GlobalScope.async {
+        delay(time)
+        action()
+    }
+    lifecycle.addObserver(CoroutineLifecycleListener(deferred))
+    deferred.start()
+}
+
 fun <T> LifecycleOwner.load(loadFunction: () -> T): Deferred<T> {
     val deferred = GlobalScope.async(context = Dispatchers.IO, start = CoroutineStart.LAZY) { loadFunction() }
     lifecycle.addObserver(CoroutineLifecycleListener(deferred))

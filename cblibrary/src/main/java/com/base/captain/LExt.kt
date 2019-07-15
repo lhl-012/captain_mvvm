@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.base.captain.ui.LBaseActivity
+import com.base.captain.ui.LBaseFragment
 import com.base.captain.utils.BaseViewModel
 import com.base.captain.utils.LJson
 import com.bumptech.glide.Glide
@@ -143,5 +144,8 @@ inline fun <reified T> String.readJson(type: HttpType = HttpType.GET, vararg par
 }
 
 inline fun <reified T : BaseViewModel> LBaseActivity.getViewModel(): T {
+    return ViewModelProvider.NewInstanceFactory().create(T::class.java)
+}
+inline fun <reified T : BaseViewModel> LBaseFragment.getViewModel(): T {
     return ViewModelProvider.NewInstanceFactory().create(T::class.java)
 }

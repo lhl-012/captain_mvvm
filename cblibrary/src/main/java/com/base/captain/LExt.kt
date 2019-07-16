@@ -146,6 +146,9 @@ inline fun <reified T> String.readJson(type: HttpType = HttpType.GET, vararg par
 inline fun <reified T : BaseViewModel> LBaseActivity.getViewModel(): T {
     return ViewModelProvider.NewInstanceFactory().create(T::class.java)
 }
+
 inline fun <reified T : BaseViewModel> LBaseFragment.getViewModel(): T {
     return ViewModelProvider.NewInstanceFactory().create(T::class.java)
 }
+
+fun Context.getString(key:String)=this.getString(this.resources.getIdentifier(key,"string",this.packageName)) ?: ""

@@ -9,6 +9,8 @@ object LSPUtils {
         prefs = context.getSharedPreferences("abc", Context.MODE_PRIVATE)
     }
 
+    fun get(name: String)= get(name,"")
+
     fun <A> get(name: String, default: A): A = with(prefs) {
         val res: Any = when (default) {
             is Long -> getLong(name, default)

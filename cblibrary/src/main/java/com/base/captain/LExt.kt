@@ -83,10 +83,10 @@ fun buildURL(url: String, params: Array<out Pair<String, Any?>>, type:HttpType):
         sb.append(App.IP)
     }
     sb.append(url)
-    if (!url.contains("?")) {
-        sb.append("?")
-    }
     if (params.isNotEmpty() && type==HttpType.GET) {
+        if (!url.contains("?")) {
+            sb.append("?")
+        }
         params.forEach {
             sb.append("&").append(it.first).append("=").append(it.second)
         }

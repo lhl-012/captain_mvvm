@@ -11,7 +11,7 @@ object LHttp {
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .apply {
-                if (!BuildConfig.DEBUG) {
+                if (!App.debug) {
                     this.proxy(Proxy.NO_PROXY)
                 }
             }

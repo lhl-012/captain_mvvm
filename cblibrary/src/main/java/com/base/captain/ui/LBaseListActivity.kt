@@ -70,6 +70,12 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
         }
     }
 
+    open fun setOnItemClick(action: (D) -> Unit){
+        mAdapter.setOnItemClickListener(recyclerView){
+            action(mList[it])
+        }
+    }
+
     open fun addHeader(view: View) {
         mAdapter.addHeaderView(view)
     }
@@ -81,7 +87,6 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
             layoutInflater.inflate(headerRes, ll_top, true)
         }
     }
-
     open fun buildData(list: List<D>?) {
         if (fresh) {
             nowPage = 1

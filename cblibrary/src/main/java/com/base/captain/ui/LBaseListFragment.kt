@@ -47,7 +47,6 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
             refreshLayout.setEnableLoadMoreWhenContentNotFull(true)
         }
     }
-
     override fun initialized() {
         recyclerView.adapter = mAdapter
         if (initType() == Type.BOTH || initType() == Type.TOP) {
@@ -63,6 +62,12 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
                 nowPage++
                 getData()
             }
+        }
+    }
+
+    open fun setOnItemClick(action: (D) -> Unit){
+        mAdapter.setOnItemClickListener(recyclerView){
+            action(mList[it])
         }
     }
 

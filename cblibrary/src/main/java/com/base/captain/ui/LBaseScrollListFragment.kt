@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_coll_list.*
 /**
  * 列表基类
  */
-abstract class LBaseScrollFragment<D> : LBaseFragment() {
+abstract class LBaseScrollListFragment<D> : LBaseFragment() {
 
     enum class Type {
         NONE, TOP, BOTTOM, BOTH
@@ -31,7 +31,7 @@ abstract class LBaseScrollFragment<D> : LBaseFragment() {
     abstract fun itemLayout(): Int
     abstract fun initBindFun(): BindAction<D>
     abstract fun initType(): Type
-    private var fresh = false
+    private var fresh = true
     override fun initView() {
         if (initHeader().isNotEmpty()) {
             for (layRes in initHeader()) {

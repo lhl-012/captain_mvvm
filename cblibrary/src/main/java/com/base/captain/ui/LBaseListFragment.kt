@@ -30,7 +30,7 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
     abstract fun itemLayout(): Int
     abstract fun initBindFun(): BindAction<D>
     abstract fun initType(): Type
-    private var fresh = false
+    private var fresh = true
     override fun initView() {
         if (initHeader().isNotEmpty()) {
             for (layRes in initHeader()) {

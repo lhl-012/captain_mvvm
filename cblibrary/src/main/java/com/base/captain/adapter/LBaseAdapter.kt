@@ -15,7 +15,7 @@ abstract class LBaseAdapter<D>(private val layoutRes: Int, private val data: Lis
     private val TYPE_FOOTER = 2
     private val TYPE_EMPTY = 3
     private var HEAD_COUNT = 0
-    private var FOOT_COUNT = 0
+    open var FOOT_COUNT = 0
     private var EMPTY_COUNT = 1
     private val contentSize: Int get() = data.size
     private var mHeadView: View? = null
@@ -157,16 +157,17 @@ abstract class LBaseAdapter<D>(private val layoutRes: Int, private val data: Lis
         notifyDataSetChanged()
     }
 
+    fun haveFooterView()=FOOT_COUNT==1
 
     fun addFooterView(view: View) {
         FOOT_COUNT = 1
         mFootView = view
-        notifyItemInserted(itemCount -1)
+        notifyDataSetChanged()
     }
 
     fun removeFooterView() {
         FOOT_COUNT = 0
         mFootView = null
-        notifyItemRemoved(itemCount)
+        notifyDataSetChanged()
     }
 }

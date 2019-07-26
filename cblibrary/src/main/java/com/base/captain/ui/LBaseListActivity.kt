@@ -24,8 +24,7 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
 
     override fun setLayout() = R.layout.activity_lbase_list
     private val mList: ArrayList<D> by lazy { ArrayList<D>() }
-    private val mAdapter: LBaseAdapter<D> by lazy { ListAdp(itemLayout(), mList, action) }
-    private lateinit var action: BindAction<D>
+    private val mAdapter: LBaseAdapter<D> by lazy { ListAdp(itemLayout(), mList, initBindFun()) }
     abstract fun initHeader(): List<Int>
     abstract fun itemLayout(): Int
     abstract fun initBindFun(): BindAction<D>
@@ -37,7 +36,6 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
                 addTopView(layRes)
             }
         }
-        action = initBindFun()
         refreshLayout.setEnableRefresh(initType() == Type.BOTH || initType() == Type.TOP)
         if ((initType() == Type.BOTH || initType() == Type.TOP)&&customAutoRefresh()) {
             refreshLayout.autoRefresh()
@@ -98,7 +96,15 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
                     if(customNoMoreData()){
                         refreshLayout.finishRefresh()
                         refreshLayout.setEnableLoadMore(false)
-                        mAdapter.addFooterView(inflateView(R.layout.item_bottom))
+                        if(mAdapter.haveFooterView()){
+                            mAdapter.notifyDataSetChanged()
+                        }else{
+                            if(mList.isEmpty()){
+                                mAdapter.removeFooterView()
+                            }else{
+                                mAdapter.addFooterView(inflateView(R.layout.item_bottom))
+                            }
+                        }
                     }else{
                         mAdapter.notifyDataSetChanged()
                         refreshLayout.finishRefresh()
@@ -146,6 +152,7 @@ abstract class LBaseListActivity<D> : LBaseActivity() {
                 }
             }
         }
+        fresh=true
     }
 
     open fun customNoMoreData()=false

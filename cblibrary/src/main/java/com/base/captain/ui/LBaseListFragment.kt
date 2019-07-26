@@ -24,8 +24,9 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
 
     override fun setLayout() = R.layout.activity_lbase_list
     private val mList: ArrayList<D> by lazy { ArrayList<D>() }
-    private val mAdapter: LBaseAdapter<D> by lazy { ListAdp(itemLayout(), mList, action) }
-    private lateinit var action: BindAction<D>
+    private val mAdapter: LBaseAdapter<D> by lazy {
+        ListAdp(itemLayout(), mList, initBindFun())
+    }
     abstract fun initHeader(): List<Int>
     abstract fun itemLayout(): Int
     abstract fun initBindFun(): BindAction<D>
@@ -37,7 +38,6 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
                 addTopView(layRes)
             }
         }
-        action = initBindFun()
         refreshLayout.setEnableRefresh(initType() == Type.BOTH || initType() == Type.TOP)
         if ((initType() == Type.BOTH || initType() == Type.TOP)&&customAutoRefresh()) {
             refreshLayout.autoRefresh()
@@ -48,16 +48,16 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
         }
     }
     override fun initialized() {
-        recyclerView.adapter = mAdapter
+        recyclerView?.adapter = mAdapter
         if (initType() == Type.BOTH || initType() == Type.TOP) {
-            refreshLayout.onRefreshListener {
+            refreshLayout?.onRefreshListener {
                 fresh = true
                 nowPage = 1
                 getData()
             }
         }
         if (initType() == Type.BOTH || initType() == Type.BOTTOM) {
-            refreshLayout.onLoadMoreListener {
+            refreshLayout?.onLoadMoreListener {
                 fresh = false
                 nowPage++
                 getData()
@@ -94,7 +94,15 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
                     if(customNoMoreData()){
                         refreshLayout.finishRefresh()
                         refreshLayout.setEnableLoadMore(false)
-                        mAdapter.addFooterView(inflateView(R.layout.item_bottom))
+                        if(mAdapter.haveFooterView()){
+                            mAdapter.notifyDataSetChanged()
+                        }else{
+                            if(mList.isEmpty()){
+                                mAdapter.removeFooterView()
+                            }else{
+                                mAdapter.addFooterView(inflateView(R.layout.item_bottom))
+                            }
+                        }
                     }else{
                         mAdapter.notifyDataSetChanged()
                         refreshLayout.finishRefresh()
@@ -142,6 +150,7 @@ abstract class LBaseListFragment<D> : LBaseFragment() {
                 }
             }
         }
+        fresh=true
     }
 
     open fun customNoMoreData()=false

@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import com.base.captain.App
 import com.base.captain.ui.LBaseActivity
 import java.util.*
+import kotlin.system.exitProcess
 
 
 object LAppManager {
@@ -18,6 +19,14 @@ object LAppManager {
     fun finishActivity(activity: LBaseActivity) {
         activityStack.remove(activity)
         activity.finish()
+    }
+    fun finishTop(num:Int){
+        try{
+            val size = activityStack.size
+            for (i in size-1 downTo size-num){
+                activityStack[i].finish()
+            }
+        }catch (e:Exception){}
     }
     fun finishAllExportMain() {
         var i = 0
@@ -47,7 +56,7 @@ object LAppManager {
         try {
             finishAllActivity()
             android.os.Process.killProcess(android.os.Process.myPid())
-            System.exit(1)
+            exitProcess(1)
         } catch (e: Exception) {
         }
     }

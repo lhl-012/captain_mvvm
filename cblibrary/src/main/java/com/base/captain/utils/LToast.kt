@@ -17,6 +17,7 @@ object LToast {
     fun show(text: String?) {
         if (!TextUtils.isEmpty(text)) {
             if (Looper.getMainLooper() == Looper.myLooper()) {
+                toast.setText(text)
                 toast.show()
             } else {
                 LAppManager.getNowActivity().runOnUiThread {

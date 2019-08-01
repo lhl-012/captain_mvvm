@@ -10,7 +10,6 @@ abstract class LBaseScrollListFragment<D> : LBaseListFragment<D>() {
 
     override fun setLayout() = R.layout.view_staticky_list
     abstract fun initScrollView():List<Int>
-    private var fresh = true
     override fun initView() {
         super.initView()
         if (initScrollView().isNotEmpty()) {

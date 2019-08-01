@@ -24,6 +24,7 @@ abstract class LBaseScrollListFragment<D> : LBaseListFragment<D>() {
             recyclerView.isNestedScrollingEnabled=false
         }
     }
+    open fun getStickyScrollView()=stickyScrollView
     private fun addTopView(headerRes: Int,parentView:ViewGroup) {
         if (headerRes != 0) {
             layoutInflater.inflate(headerRes, parentView, true)

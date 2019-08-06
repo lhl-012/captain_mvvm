@@ -68,6 +68,7 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showMsgDialog(context: Context, msg: String, btn: String, action: () -> Unit) {
@@ -81,6 +82,7 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showNoCancelDialog(context: Context, title: String, msg: String, action: () -> Unit) {
@@ -95,6 +97,7 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showCancelDialog(context: Context, title: String, msg: String, action: () -> Unit) {
@@ -109,6 +112,7 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showListDialog(context: Context, title: String, items: Array<String>, action: (Int) -> Unit) {
@@ -121,6 +125,7 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun showInputDialog(context: Context, title: String, place: String, inputType: Int, action: (String) -> Unit) {
@@ -147,5 +152,6 @@ object LDialog {
             .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+        dialog.window?.setLayout(dp2px(context, 350), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

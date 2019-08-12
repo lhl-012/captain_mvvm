@@ -15,8 +15,10 @@ abstract class LBaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         LAppManager.addActivity(this)
         LDMUtils.setCustomDensity(this, application, 375)
-        LStatusBarHelper.translucent(this)
-        setStateBar(isWhite())
+        if(isTranslucent()){
+            LStatusBarHelper.translucent(this)
+            setStateBar(isWhite())
+        }
         if (setLayout() != 0) {
             setContentView(setLayout())
             initView()
@@ -51,6 +53,7 @@ abstract class LBaseActivity : AppCompatActivity() {
 
     abstract fun setLayout(): Int
     open fun isWhite(): Boolean = false
+    open fun isTranslucent(): Boolean = true
     open fun initView() {}
     open fun initialized() {}
     override fun onDestroy() {

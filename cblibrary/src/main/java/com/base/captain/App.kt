@@ -11,6 +11,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import java.io.File
 
 open class App : Application() {
     init {
@@ -24,21 +25,22 @@ open class App : Application() {
             layout.setDisableContentWhenLoading(true)
         }
         SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
-            layout.setPrimaryColorsId(R.color.bg,R.color.style_color_primary)
+            layout.setPrimaryColorsId(R.color.bg, R.color.style_color_primary)
             ClassicsHeader(context).setEnableLastTime(false).setSpinnerStyle(SpinnerStyle.FixedBehind)
         }
-        SmartRefreshLayout.setDefaultRefreshFooterCreator{ context, layout ->
-            layout.setPrimaryColorsId(R.color.bg,R.color.style_color_primary)
+        SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
+            layout.setPrimaryColorsId(R.color.bg, R.color.style_color_primary)
             ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.FixedBehind)
         }
     }
+
     companion object {
         var IP = ""
         lateinit var ATY_MANAGER: ActivityManager
         var PCK_NAME = ""
         var TASK_ID = 0
         var appCtx: Application? = null
-        var debug=false
+        var debug = false
     }
 
     override fun onCreate() {
@@ -49,13 +51,15 @@ open class App : Application() {
         LBroadcastUtils.init(applicationContext)
         ATY_MANAGER = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         PCK_NAME = packageName
-//        Thread.setDefaultUncaughtExceptionHandler { _, e ->
-//            val file = File(applicationContext.getExternalFilesDir(""), "app.log")
-//            if (file.exists() && file.isDirectory) {
-//            } else {
-//                file.createNewFile()
-//            }
-//            file.writeText(e.localizedMessage + "\r\n")
-//        }
+        if (debug) {
+            Thread.setDefaultUncaughtExceptionHandler { _, e ->
+                val file = File(applicationContext.getExternalFilesDir(""), "app.log")
+                if (file.exists() && file.isDirectory) {
+                } else {
+                    file.createNewFile()
+                }
+                file.writeText(e.localizedMessage + "\r\n")
+            }
+        }
     }
 }

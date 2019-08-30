@@ -2,32 +2,36 @@ package com.base.captain
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Outline
 import android.util.Log.e
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.base.captain.ui.LBaseActivity
 import com.base.captain.ui.LBaseFragment
 import com.base.captain.utils.BaseViewModel
-import com.base.captain.utils.LJson
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
 import okhttp3.FormBody
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 
@@ -120,24 +124,24 @@ fun String.request(type: HttpType = HttpType.GET,vararg params: Pair<String, Any
 enum class HttpType {
     GET, POST
 }
-inline fun <reified T> String.readJsonVM(type: HttpType = HttpType.GET, params: Array<out Pair<String, Any?>>):T?{
-    return try {
-        LJson.gson.fromJson<T>(LHttp.client.newCall(Request.Builder().url(buildURL(this, params, type)).apply { if (type==HttpType.POST) post(buildPostBody(params)) }.build()).execute().body?.string(), object : TypeToken<T>() {}.type)
+fun String.readJsonVM(type: HttpType = HttpType.GET, params: Array<out Pair<String, Any?>>):JSONObject?{
+    return try {JSONObject(
+        LHttp.client.newCall(Request.Builder().url(buildURL(this, params, type)).apply { if (type==HttpType.POST) post(buildPostBody(params)) }.build()).execute().body?.string())
     }catch (e: IOException) {
         e("net--","请求错误-->${e.localizedMessage}")
         null
-    } catch (e: JsonSyntaxException) {
+    } catch (e: JSONException) {
         e("net--","解析失败-->${e.localizedMessage}")
         null
     }
 }
-inline fun <reified T> String.readJson(type: HttpType = HttpType.GET, vararg params: Pair<String, Any?>):T?{
+fun String.readJson(type: HttpType = HttpType.GET, vararg params: Pair<String, Any?>):JSONObject?{
     return try {
-        LJson.gson.fromJson<T>(LHttp.client.newCall(Request.Builder().url(buildURL(this, params, type)).apply { if (type==HttpType.POST) post(buildPostBody(params)) }.build()).execute().body?.string(), object : TypeToken<T>() {}.type)
+        JSONObject(LHttp.client.newCall(Request.Builder().url(buildURL(this, params, type)).apply { if (type==HttpType.POST) post(buildPostBody(params)) }.build()).execute().body?.string())
     }catch (e: IOException) {
         e("net--","请求错误-->${e.localizedMessage}")
         null
-    } catch (e: JsonSyntaxException) {
+    } catch (e: JSONException) {
         e("net--","解析失败-->${e.localizedMessage}")
         null
     }
@@ -152,3 +156,29 @@ inline fun <reified T : BaseViewModel> LBaseFragment.getViewModel(): T {
 }
 
 fun Context.getString(key:String)=this.getString(this.resources.getIdentifier(key,"string",this.packageName)) ?: ""
+
+fun View.circle() {
+    clipToOutline = true
+    outlineProvider = object : ViewOutlineProvider() {
+        override fun getOutline(v: View, outline: Outline) {
+            outline.setOval(v.paddingLeft, v.paddingTop, v.width - v.paddingRight, v.height - v.paddingBottom)
+        }
+    }
+}
+
+fun View.round(r: Int) {
+    clipToOutline = true
+    outlineProvider = object : ViewOutlineProvider() {
+        override fun getOutline(v: View, outline: Outline) {
+            outline.setRoundRect(r, r, v.width - r, v.height - r, r.toFloat())
+        }
+    }
+}
+
+fun Context.dp2px(dipValue: Int) = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dipValue.toFloat(), resources.displayMetrics
+).toInt()
+
+fun EditText.txt()=text.trim().toString()
+fun TextView.txt()=text.toString()
